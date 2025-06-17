@@ -1,0 +1,40 @@
+  <h1 class=" px-4 mx-auto max-w-screen-xl text-black dark:text-white font-bold text-2xl" id="blogs">Blog Post</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
+        <?php while ($post = $posts->fetch_assoc()): ?>
+            <!-- Card -->
+            <div class="bg-white border w-3/6 h-32 flex flex-col justify-evenly border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                <a href="#">
+                    <?php if (!empty($post['banner_image'])): ?>
+                        <div class="post-banner">
+                            <img src="<?php echo htmlspecialchars($post['banner_image']); ?>" alt="Post banner" style="width:100%; height:200px">
+                        </div>
+                    <?php endif; ?>
+                </a>
+                <div class="p-5">
+                    <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        <a href="post.php?id=<?php echo $post['id']; ?>"><?php echo htmlspecialchars($post['title']); ?></a>
+                    </h2>
+                    <div class="post-meta">
+                        <div class="author-info">
+                            <img src="<?php echo htmlspecialchars($post['profile_picture'] ?? 'default.png'); ?>" class="profile-pic" alt="Profile">
+                            <?php echo htmlspecialchars($post['username']); ?>
+                        </div>
+                        Posted on <?php echo date('F j, Y', strtotime($post['created_at'])); ?>
+                    </div>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                        <?php
+                        // Remove HTML tags and limit excerpt length
+                        $excerpt = strip_tags($post['content']);
+                        $excerpt = substr($excerpt, 0, 200);
+                        echo htmlspecialchars($excerpt);
+                        if (strlen($post['content']) > 200) echo '...';
+                        ?>
+                    </p>
+                    <a class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" href="post.php?id=<?php echo $post['id']; ?>">
+                        Read more
+                    </a>
+                </div>
+            </div>
+        <?php endwhile; ?>
+    </div>

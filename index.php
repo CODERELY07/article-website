@@ -1,6 +1,6 @@
 <?php
-require_once 'functions.php';
-$posts = getAllPosts();
+// require_once 'functions.php';
+// $posts = getAllPosts();
 ?>
 
 <!DOCTYPE html>
@@ -12,257 +12,187 @@ $posts = getAllPosts();
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>cybersec daliva</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <style>
-        .post {
-            border-bottom: 1px solid #eee;
-            padding: 20px 0;
-        }
-
-        .post-title {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .post-meta {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .author-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .profile-pic {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .post-excerpt {
-            margin-top: 15px;
-        }
-
-        .post-excerpt img {
-            display: none;
-        }
-
-        /* Hide images in excerpt */
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            padding: 8px 15px;
-            background: #333;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-
-        /* For code blocks */
-        .ql-syntax {
-            background-color: #f5f5f5;
-            padding: 15px;
-            border-radius: 4px;
-            overflow-x: auto;
-            font-family: monospace;
-            margin: 10px 0;
-        }
-
-        /* For images in content */
-        .ql-editor img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 10px auto;
-        }
-
-        /* For banner */
-
-
-        .post-banner img {
-            max-height: 400px;
-            width: 100%;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body class="bg-white dark:bg-gray-900">
-
-    <!--navbar !-->
-<nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-      <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white ">Cybersec</span>
-    </a>
-    <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-      <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
-        </svg>
-      </button>
-    </div>
-    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-      <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <li>
-          <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
-        </li>
-        <li>
-         <?php 
-            if (isLoggedIn()) {
-                echo '<a href="./my_posts.php" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Posts</a>';
-            }
-            else{
-                echo '<a href="./signup.php" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Activity Register</a>';
-            }
-        ?>
-        </li>
-        <li>
-          <a href="./login.php" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Admin</a>
-        </li>
-      </ul>
+    <?php include('./components/navbar.php');?>
+    <div id="preloader">
+    <div class="loader">
+      <img src="./assets/logo.png" alt="Sibol logo" class="mx-auto block" width="120">
+      <img src="./assets/load.gif" alt="Loading..." class="mx-auto block">
     </div>
   </div>
-</nav>
-
-
-    <!--hero section !-->
-    <section class="bg-center  bg-no-repeat bg-[url('https://bunny-wp-pullzone-3xue3q6yzy.b-cdn.net/wp-content/uploads/2025/02/EM-blog-cybersecurity-masters-without-background-2099147743.jpg')] bg-gray-700 bg-blend-multiply">
-        <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
-            <a href="#" class="inline-flex justify-between items-center py-1 px-1 pe-4 mb-7 text-sm text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800">
-                <span class="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 me-3">Admin account</span> <span class="text-sm font-medium">username: daliva | password:daliva099</span>
-                <svg class="w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+     <main class="bg-white dark:bg-gray-900">
+      <!-- Section 0 -->
+      <div id="default-carousel" class="relative w-full mb-20" data-carousel="slide">
+        <div class="relative h-screen py-20 overflow-hidden md:h-screen">
+          <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <section class="flex h-screen items-center justify-center bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
+              <div class="flex flex-col items-center justify-center h-full text-center px-4 mx-auto max-w-screen-xl relative">
+                <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+                  Mga Akdang Pampanitikan
+                </h1>
+                <p class="mb-8 text-md font-normal text-gray-500 lg:text-lg sm:px-16 lg:px-48 dark:text-gray-200">
+                  Ang panitikan ay nagmula sa “pang-titik-an”. Ang kahulugan nito ay literatura o mga akdang nasusulat.
+                </p>
+              </div>
+            </section>
+          </div>
+          <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <section class="flex h-screen items-center justify-center bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
+              <div class="flex flex-col items-center justify-center h-full text-center px-4 mx-auto max-w-screen-xl relative">
+                <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+                  Ang Alamat
+                </h1>
+                <p class="mb-8 text-md font-normal text-gray-500 lg:text-lg sm:px-16 lg:px-48 dark:text-gray-200">
+                  Ang alamat ay isang uri ng panitikan na nagkukuwento tungkol sa mga pinagmulan ng mga bagay sa daigdig.
+                </p>
+              </div>
+            </section>
+          </div>
+          <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <section class="flex h-screen items-center justify-center bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
+              <div class="flex flex-col items-center justify-center h-full text-center px-4 mx-auto max-w-screen-xl relative">
+                <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+                  Maikling Kwento
+                </h1>
+                <p class="mb-8 text-md font-normal text-gray-500 lg:text-lg sm:px-16 lg:px-48 dark:text-gray-200">
+                  Ang maikling kuwento ay isang maikling salaysay hinggil sa isang mahalagang pangyayari.
+                </p>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="wrapper absolute bottom-2 left-0 right-0 flex items-center justify-center z-50">
+          <div class="scroll-icon">
+            <span class="text-sm">Scroll</span>
+            <div class="mouse-icon w-4 h-6">
+              <div class="mouse-icon_wheel w-1 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Section 1 -->
+      <section class="bg-white dark:bg-gray-900 md:px-10" id="more">
+        <div class="py-8 px-4 text-white mx-auto max-w-screen-xl lg:py-1">
+          <div data-aos="zoom-in-up" data-aos-duration=1000 class="hover:scale-101 hover:shadow-lg bg-blue-600 dark:bg-gray-800 border border-gray-200 cursor-pointer dark:border-gray-700 rounded-lg p-8 mb-8">
+            <a href="#" class="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2 py-1 rounded-md dark:bg-gray-700 dark:text-blue-400 mb-1">Akdang Pampanitikan</a>
+            <h1 class="dark:text-white text-3xl md:text-3xl font-extrabold mb-4">Ano ang SIBOL?</h1>
+            <p class="text-md font-normal dark:text-gray-400">
+              Suri sa Inobatibong Batay sa Online Learning. Gamit ang Online Platform na ito maari mong masaba at matuto tungkol ibat ibat uri ng mga panitikan katulad ng mga Alamat,Maikling kwento at iba pa.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-2 md:gap-8">
+            <div data-aos="flip-right" data-aos-duration=1000 class="hover:scale-101 hover:shadow-lg bg-purple-600 dark:bg-gray-800 border border-gray-200 cursor-pointer dark:border-gray-700 rounded-lg p-8 mb-8">
+              <a href="#" class="bg-purple-100 text-purple-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 mb-1">Tula</a>
+              <h1 class="dark:text-white text-3xl md:text-3xl font-extrabold mb-4">Ano ang Tula?</h2>
+              <p class="text-md font-normal dark:text-gray-400">
+                Ang tula ay isang masining na pagpapahayag ng damdamin, kaisipan, o karanasan sa pamamagitan ng matalinghagang wika at sukat at tugma (bagama’t may mga tulang malaya na rin sa mga ito). Ginagamit sa tula ang tayutay at malikhaing anyo upang makalikha ng bisa sa damdamin ng mambabasa o tagapakinig.
+              </p>
+            </div>
+            <div data-aos="flip-right" data-aos-duration=1000 class="hover:scale-101 hover:shadow-lg bg-purple-600 dark:bg-gray-800 border border-gray-200 cursor-pointer dark:border-gray-700 rounded-lg p-8 mb-8">
+              <a href="#" class="bg-purple-100 text-purple-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 mb-1">Dula</a>
+              <h1 class="dark:text-white text-3xl md:text-3xl font-extrabold mb-4">Ano ang Dula?</h2>
+              <p class="text-md font-normal dark:text-gray-400">
+                Ang dula ay isang uri ng panitikan na itinatanghal sa entablado o sa harap ng madla. Layunin nitong libangin, magturo, o magbigay ng mensahe sa pamamagitan ng kilos at diyalogo ng mga tauhan. Nahahati ito sa ilang yugto o eksena, at karaniwan itong ginaganap sa anyong iskrip at may direksiyon.
+              </p>
+            </div>
+            <div data-aos="flip-left" data-aos-duration=1000 class="hover:scale-101 hover:shadow-lg bg-orange-600 dark:bg-gray-800 border border-gray-200 cursor-pointer dark:border-gray-700 rounded-lg p-8 mb-8">
+              <a href="#" class="bg-orange-100 text-orange-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-yellow-400 mb-1">Maikling Kwento</a>
+              <h1 class="dark:text-white text-3xl md:text-3xl font-extrabold mb-4">Ano ang Maikling kwento?</h2>
+              <p class="text-md font-normal dark:text-gray-400">
+                Ang maikling kuwento - binaybay ding maikling kwento - ay isang
+                maiksing salaysay hinggil sa isang mahalagang pangyayaring
+                kinasasangkutan ng isa o ilang tauhan at may iisang kakintalan o
+                impresyon lamang.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Section 3 -->
+      <div class="flex flex-col px-5 mt-20 pb-20 px-8 md:px-10 md:flex-row items-center justify-between space-y-8 md:space-y-0 md:space-x-8 mx-auto max-w-screen-xl">
+        <!-- Carousel Section -->
+        <div class="relative w-full md:w-1/2">
+          <div id="indicators-carousel" class="relative w-full" data-carousel="slide">
+            <div class="relative h-100 overflow-hidden rounded-lg md:h-80">
+              <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+                <img src="./assets/home_carousel/himig.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 sm:h-72=" alt="...">
+              </div>
+              <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                <img src="./assets/home_carousel/dalampasigan.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+              </div>
+              <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                <img src="./assets/home_carousel/pag-ibig.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+              </div>
+              <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                <img src="./assets/home_carousel/silahis.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+              </div>
+              <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                <img src="./assets/home_carousel/sa piling mo.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+              </div>
+            </div>
+            <!-- Slider indicators -->
+            <div class="absolute z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse bottom-5 left-1/2">
+              <button type="button" class="w-2 h-2 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+              <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+              <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
+              <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
+              <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
+            </div>
+            <!-- Slider controls -->
+            <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+              <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                <svg class="w-3 h-3 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
                 </svg>
-            </a>
-            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">Cyber Security Tips</h1>
-            <p class="mb-8 text-md font-normal text-gray-300 lg:text-xl sm:px-10 lg:px-48">Stay Safe Online with Smart Cybersecurity Tips
-                Protect your personal information, devices, and digital life. Explore essential tips and best practices to defend against cyber threats, scams, and online vulnerabilities—because your security starts with awareness.</p>
-            <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
-                <a href="#blogs" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
-                    Get started
-                    <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                </a>
-                <a href="#intro" class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
-                    Learn more
-                </a>
-            </div>
+                <span class="sr-only">Previous</span>
+              </span>
+            </button>
+            <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+              <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                <svg class="w-3 h-3 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                </svg>
+                <span class="sr-only">Next</span>
+              </span>
+            </button>
+          </div>
         </div>
-    </section>
-
-
-    <!--what is cybersec !-->
-    <section class="bg-white dark:bg-gray-900" id="intro">
-        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
-            <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 mb-8">
-                <a href="#" class="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-blue-400 mb-2">
-                    <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
-                        <path d="M11 0H2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm8.585 1.189a.994.994 0 0 0-.9-.138l-2.965.983a1 1 0 0 0-.685.949v8a1 1 0 0 0 .675.946l2.965 1.02a1.013 1.013 0 0 0 1.032-.242A1 1 0 0 0 20 12V2a1 1 0 0 0-.415-.811Z" />
-                    </svg>
-                    Introduction
-                </a>
-                <h1 class="text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-2">What is cybersecurity?</h1>
-                <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">Cybersecurity is the practice of protecting internet-connected systems such as hardware, software and data from cyberthreats. It's used by individuals and enterprises to protect against unauthorized access to data centers and other computerized systems.</p>
-                <a href="./introduction/what-is-cyber-security.php" class="inline-flex justify-center items-center py-2.5 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
-                    Read more
-                    <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                </a>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
-                    <a href="#" class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 mb-2">
-                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                            <path d="M17 11h-2.722L8 17.278a5.512 5.512 0 0 1-.9.722H17a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1ZM6 0H1a1 1 0 0 0-1 1v13.5a3.5 3.5 0 1 0 7 0V1a1 1 0 0 0-1-1ZM3.5 15.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2ZM16.132 4.9 12.6 1.368a1 1 0 0 0-1.414 0L9 3.55v9.9l7.132-7.132a1 1 0 0 0 0-1.418Z" />
-                        </svg>
-                        cybersec
-                    </a>
-                    <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Common Cyber Threats and Mitigation Strategies</h2>
-                    <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4"> In today's hyper-connected world, nearly every aspect of our lives touches the digital realm – from banking and shopping to socializing and working. While this connectivity offers immense convenience, it also exposes us to a growing number of cyber threats. </p>
-                    <a href="./introduction/different-attacks-mitigation.php" class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Read more
-                        <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                        </svg>
-                    </a>
-                </div>
-                <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
-                    <a href="#" class="bg-purple-100 text-purple-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-purple-400 mb-2">
-                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4 1 8l4 4m10-8 4 4-4 4M11 1 9 15" />
-                        </svg>
-                        Code
-                    </a>
-                    <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Mitigation for attacks</h2>
-                    <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">While cyber threats are a constant presence in our digital lives (as outlined in our guide to Common Cyber Threats), you are not powerless against them. By implementing proactive security measures and adopting safe online habits, you can significantly reduce your risk of becoming a victim.</p>
-                    <a href="./introduction/mitigation-strategies.php" class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Read more
-                        <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
+        <!-- Text Section -->
+        <div class="w-full md:w-1/2">
+          <h2 class="dark:text-white text-2xl font-semibold mb-4">Mga Ilan sa mga Akdang Panitikan</h2>
+          <p class="text-md text-gray-400">
+              Ito ay mga halimbawa ng akdang panitikan na orihinal na gawa ng SIBOl. Ang mga akdang ito ay nilikha ng mga kasapi at mga talento ng SIBol, na naglalayong ipakita ang kagandahan at kahalagahan ng ating kultura at tradisyon. Sa bawat tula, kwento, at sanaysay na kanilang isinulat, ipinapakita ang malalim na pag-unawa sa ating kasaysayan at mga karanasan bilang isang bansa. Ang mga akdang ito ay nagsisilbing pagninilay at pagpapahayag ng ating mga saloobin at pananaw tungkol sa ating lipunan.
+          </p>
         </div>
-    </section>
-
-    daliva@gmail.com
-    D@liva12
-
-    <h1 class=" px-4 mx-auto max-w-screen-xl text-black dark:text-white font-bold text-2xl" id="blogs">Blog Post</h1>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
-        <?php while ($post = $posts->fetch_assoc()): ?>
-            <!-- Card -->
-            <div class="bg-white border w-3/6 h-32 flex flex-col justify-evenly border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                <a href="#">
-                    <?php if (!empty($post['banner_image'])): ?>
-                        <div class="post-banner">
-                            <img src="<?php echo htmlspecialchars($post['banner_image']); ?>" alt="Post banner" style="width:100%; height:200px">
-                        </div>
-                    <?php endif; ?>
-                </a>
-                <div class="p-5">
-                    <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        <a href="post.php?id=<?php echo $post['id']; ?>"><?php echo htmlspecialchars($post['title']); ?></a>
-                    </h2>
-                    <div class="post-meta">
-                        <div class="author-info">
-                            <img src="<?php echo htmlspecialchars($post['profile_picture'] ?? 'default.png'); ?>" class="profile-pic" alt="Profile">
-                            <?php echo htmlspecialchars($post['username']); ?>
-                        </div>
-                        Posted on <?php echo date('F j, Y', strtotime($post['created_at'])); ?>
-                    </div>
-                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                        <?php
-                        // Remove HTML tags and limit excerpt length
-                        $excerpt = strip_tags($post['content']);
-                        $excerpt = substr($excerpt, 0, 200);
-                        echo htmlspecialchars($excerpt);
-                        if (strlen($post['content']) > 200) echo '...';
-                        ?>
-                    </p>
-                    <a class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" href="post.php?id=<?php echo $post['id']; ?>">
-                        Read more
-                    </a>
-                </div>
-            </div>
-        <?php endwhile; ?>
-    </div>
-
+      </div>
+    </main>
+  
     <?php include("./components/footer.php") ?>
+     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
 
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+        document.querySelectorAll('#preloader .loader p span').forEach((span, index) => {
+        span.style.setProperty('--i', index); 
+        });
+
+        setTimeout(() => {
+        document.getElementById('preloader').classList.add('hidden');
+        
+        setTimeout(() => {
+            document.getElementById('preloader').style.display = 'none';
+            document.getElementById('preloader').classList.remove('hidden');
+            document.getElementById('main-content').style.display = 'block'; 
+        }, 1000); 
+        }, 3000); 
+    </script>
 </body>
-
 </html>
 

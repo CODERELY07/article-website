@@ -8,13 +8,14 @@ if (!isLoggedIn()) {
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = sanitizeInput($_POST['title']);
+   $title = sanitizeInput($_POST['title']);
+    $author = sanitizeInput($_POST['author']);
     $content = $_POST['content'];
+    $categoryId = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
 
-    if (empty($title) || empty($content)) {
-        $error = "Title and content are required";
+    if (empty($title) || empty($content) || $categoryId === 0) {
+        $error = "Title, content, and category are required";
     } else {
-        // Sanitize HTML content
         $cleanContent = sanitizeHtml($content);
 
         $bannerImage = '';
@@ -39,19 +40,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $userId = $_SESSION['user_id'];
-        $stmt = $conn->prepare("INSERT INTO posts (user_id, title, content, banner_image) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("isss", $userId, $title, $cleanContent, $bannerImage);
+        $stmt = $conn->prepare("INSERT INTO panitikan (category_id, title, author, content, banner_image) VALUES ( ?, ?, ?, ?, ?)");
+        $stmt->bind_param("issss", $categoryId, $title, $author, $cleanContent, $bannerImage);
+
 
         if ($stmt->execute()) {
-            header("Location: post.php?id=" . $stmt->insert_id);
+            header("Location: panitikan.php?id=" . $stmt->insert_id);
             exit();
         } else {
-            $error = "Error creating post. Please try again.";
+            $error = "Error creating entry. Please try again.";
         }
         $stmt->close();
     }
 }
+
+// Get categories for dropdown
+$categories = getAllCategories();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,9 +99,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
             </div>
             <div>
+                <label for="category_id" class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Category</label>
+                <select name="category_id" id="category_id" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 bg-white dark:bg-gray-800 dark:border-gray-700 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">-- Select a Category --</option>
+                    <?php while ($cat = $categories->fetch_assoc()): ?>
+                        <option value="<?php echo $cat['id']; ?>"><?php echo htmlspecialchars($cat['name']); ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+
+            <div>
                 <label for="title" class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Title</label>
                 <input type="text" id="title" name="title" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline">
             </div>
+            <div>
+                <label for="author" class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Author</label>
+                <input type="text" id="author" name="author" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
             <div>
                 <label for="content" class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Content</label>
                 <div id="editor" class="bg-white dark:bg-gray-800 rounded-b-md"></div>
