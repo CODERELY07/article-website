@@ -36,7 +36,7 @@ function getUserById($id)
     return $result->fetch_assoc();
 }
 
-// ✅ Fetch a single Panitikan entry with category name
+
 function getPanitikanById($id)
 {
     global $conn;
@@ -51,7 +51,7 @@ function getPanitikanById($id)
     return $result->fetch_assoc();
 }
 
-// ✅ Get all Panitikan entries with category names
+
 function getAllPanitikan()
 {
     global $conn;
@@ -64,7 +64,7 @@ function getAllPanitikan()
     return $stmt->get_result();
 }
 
-// ✅ Get Panitikan by Category Name (like 'MAIKLING KUWENTO')
+
 function getPanitikanByCategory($categoryName)
 {
     global $conn;
@@ -79,7 +79,6 @@ function getPanitikanByCategory($categoryName)
     return $stmt->get_result();
 }
 
-// ✅ Optional: Get all categories
 function getAllCategories()
 {
     global $conn;
@@ -87,4 +86,31 @@ function getAllCategories()
     $stmt->execute();
     return $stmt->get_result();
 }
+
+function createAdmin(){
+    global $conn;
+    
+    $username = "admin";
+    $email = "admin@gmail.com";
+    $password = "admincreate123";
+
+    // check if user is alreay exist
+    $adminExist = $conn->prepare("SELECT email from users WHERE email = ?");
+    $adminExist->bind_param("s", $email);
+    $adminExist->execute();
+
+    $result = $adminExist->get_result();
+
+    if($result->num_rows > 0){
+        return;
+    }
+    
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $conn->prepare("INSERT INTO users(username, email, password) VALUES(?, ?, ?) ");
+    $stmt->bind_param("sss",$username, $email, $password_hash);
+
+    $stmt->execute();
+}
+
+createAdmin();
 ?>

@@ -12,13 +12,13 @@ if (!isset($_GET['id'])) {
 }
 
 $postId = sanitizeInput($_GET['id']);
-$post = getPostById($postId);
+$post = getPanitikanById($postId);
 
 // Check if post exists and belongs to the logged-in user
-if (!$post || $post['user_id'] != $_SESSION['user_id']) {
-    header("Location: my_posts.php");
-    exit();
-}
+// if (!$post || $post['user_id'] != $_SESSION['user_id']) {
+//     header("Location: my_posts.php");
+//     exit();
+// }
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $stmt = $conn->prepare("UPDATE posts SET title = ?, content = ?, banner_image = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE panitikan SET title = ?, content = ?, banner_image = ? WHERE id = ?");
         $stmt->bind_param("sssi", $title, $cleanContent, $bannerImage, $postId);
 
         if ($stmt->execute()) {

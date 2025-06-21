@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         if ($stmt->execute()) {
-            header("Location: panitikan.php?id=" . $stmt->insert_id);
+            header("Location: my_posts.php");
             exit();
         } else {
             $error = "Error creating entry. Please try again.";

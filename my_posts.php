@@ -1,30 +1,21 @@
 <?php
-require_once 'functions.php';
+    require_once 'functions.php';
+    $title = "My Posts";
+    if (!isLoggedIn()) {
+        header("Location: login.php");
+        exit();
+    }
 
-if (!isLoggedIn()) {
-    header("Location: login.php");
-    exit();
-}
-if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
-    header('Location: login.php');
-    exit();
-}
 
-$userId = $_SESSION['user_id'];
-$posts = getUserPosts($userId);
+    $userId = $_SESSION['user_id'];
+    $posts = getAllPanitikan();
+    
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Posts</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-300 antialiased">
-    <div class="max-w-3xl mx-auto p-6">
+<?php include('./components/head.php')?>
+<?php include('./components/navbar.php');?>
+<?php include('./components/preloader.php')?>
+    <div class=" p-6">
         <h1 class="text-2xl font-semibold mb-4 dark:text-white">My Posts</h1>
         <div class="mb-4 space-x-2">
             <a href="index.php" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Back to Home</a>
@@ -39,8 +30,8 @@ $posts = getUserPosts($userId);
                 <?php while ($post = $posts->fetch_assoc()): ?>
                     <div class="bg-white dark:bg-gray-800 shadow rounded-md p-4">
                         <?php if (!empty($post['banner_image'])): ?>
-                            <div class="mb-4 rounded-md overflow-hidden">
-                                <img src="<?php echo htmlspecialchars($post['banner_image']); ?>" alt="Post banner" class="w-full h-32">
+                            <div class="mb-4 rounded-md  h-70 w-100  mx-auto overflow-hidden">
+                                <img src="<?php echo htmlspecialchars($post['banner_image']); ?>" alt="Post banner" class="object-cover">
                             </div>
                         <?php endif; ?>
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -72,6 +63,4 @@ $posts = getUserPosts($userId);
             </div>
         <?php endif; ?>
     </div>
-</body>
-
-</html>
+    <?php include("./components/footer.php");?>

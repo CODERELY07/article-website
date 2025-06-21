@@ -7,43 +7,6 @@ if (isLoggedIn()) {
     exit();
 }
 
-$error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
-    $password = trim($_POST['password'] ?? '');
-
-    try {
-        $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE email = ? AND is_verified = 1");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
-            if (password_verify($password, $user['password'])) {
-                // Generate OTP for 2FA
-                $otp = rand(100000, 999999); // 6-digit OTP
-                $_SESSION['otp'] = $otp;
-                $_SESSION['email'] = $email;
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8');
-                
-                // Here you would typically send the OTP to the user's email
-                // For now, we'll just redirect to verification
-                header("Location: verify_otp.php");
-                exit();
-            }
-        }
-
-        // Generic error message for security
-        $error = "Invalid email, password, or account not verified";
-    } catch (Exception $e) {
-        error_log('Login error: ' . $e->getMessage());
-        $error = "An error occurred. Please try again.";
-    } finally {
-        if (isset($stmt)) $stmt->close();
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en" class="h-full">
@@ -73,30 +36,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </p>
             </div>
 
-            <!-- Error Message -->
-            <?php if ($error): ?>
-                <div class="rounded-md bg-red-50 dark:bg-red-900 dark:bg-opacity-20 p-4">
-                    <div class="flex">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-exclamation-circle h-5 w-5 text-red-400 dark:text-red-300"></i>
-                        </div>
-                        <div class="ml-3">
-                            <p class="text-sm text-red-700 dark:text-red-200">
-                                <?= htmlspecialchars($error) ?>
-                            </p>
-                        </div>
+           
+            <div id="errorContainer" class=" rounded-md bg-red-50 dark:bg-red-900 dark:bg-opacity-20 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-circle h-5 w-5 text-red-400 dark:text-red-300"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p id="errorMessage" class="text-sm text-red-700 dark:text-red-200">
+                           
+                        </p>
                     </div>
                 </div>
-            <?php endif; ?>
+            </div>
 
-            <form class="mt-8 space-y-6" method="POST">
-                <?php 
-                    if(isset($_SESSION['verification_success'])){
-                        echo '<p class="text-green-900 font-bold"> Email verified successfully! You can now login. </p>';
-                    }
-                    
-                   
-                ?>
+            <form class="mt-8 space-y-6" id="loginForm">
                 <div class="rounded-md shadow-sm space-y-4">
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -106,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-envelope text-gray-400 dark:text-gray-500"></i>
                             </div>
-                            <input id="email" name="email" type="email" required
+                            <input id="email" name="email" type="email" 
                                 class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                 placeholder="your.email@example.com">
                         </div>
@@ -120,14 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-lock text-gray-400 dark:text-gray-500"></i>
                             </div>
-                            <input id="password" name="password" type="password" required
+                            <input id="password" name="password" type="password" 
                                 class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                 placeholder="••••••••">
                         </div>
                     </div>
                 </div>
-
-
                 <div>
                     <button type="submit"
                         class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 shadow">
@@ -138,16 +90,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </button>
                 </div>
             </form>
-
-            <div class="text-center">
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Don't have an account?
-                    <a href="signup.php" class="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
-                        Register here
-                    </a>
-                </p>
-            </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#errorContainer').hide();
+
+            $('#loginForm').submit(function (e) {
+                e.preventDefault();
+
+                const email = $('#email').val().trim();
+                const password = $('#password').val().trim();
+
+                if (!email || !password) {
+                     $('#errorContainer').show();
+                    $('#errorMessage').text('Please enter both email and password.');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'ajax_login.php',
+                    data: { email: email, password: password },
+                    dataType: 'json',
+                    success: function (response) {
+                      
+                        if (response.success) {
+                            $('#errorContainer').hide();
+                            $('#errorMessage').text("");
+                            window.location.href = "./my_posts.php";
+                        } else{
+                            $('#errorContainer').show();
+                            $('#errorMessage').text(response.message);
+                        }
+                    },
+                    error: function () {
+                         $('#errorContainer').hide();
+                        $('#errorMessage').text('An unexpected error occurred. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

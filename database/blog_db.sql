@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2025 at 10:37 AM
+-- Generation Time: Jun 21, 2025 at 09:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -78,7 +78,8 @@ CREATE TABLE `registration_logs` (
 
 INSERT INTO `registration_logs` (`id`, `ip_address`, `created_at`) VALUES
 (1, '127.0.0.1', '2025-05-12 19:16:30'),
-(2, '127.0.0.1', '2025-05-12 20:49:48');
+(2, '127.0.0.1', '2025-05-12 20:49:48'),
+(3, '::1', '2025-06-18 12:42:24');
 
 -- --------------------------------------------------------
 
@@ -91,9 +92,6 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `profile_picture` varchar(255) DEFAULT NULL,
-  `verification_code` varchar(255) DEFAULT NULL,
-  `is_verified` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -101,9 +99,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `profile_picture`, `verification_code`, `is_verified`, `created_at`) VALUES
-(1, 'phseeker', 'daliva@gmail.com', '$2y$10$g5c8VnRAKeOwrhYf8FX50uJjrp3Z4bEEDqsW1Wle7ujNno2fddKym', 'default.png', '833708', '1', '2025-05-12 19:16:29'),
-(2, 'jeanelle', 'jeanelle@gmail.com', '$2y$10$K6.wm/vA7LwUePNUtRl5l.ImYHwmqS5I8GrUI.cR1lKmuLjWhToqO', 'default.png', '439219', '1', '2025-05-12 20:49:48');
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`) VALUES
+(5, 'admin', 'admin@gmail.com', '$2y$10$RgLKLpY1045fwqYQDH9gOehcY1FFZZy76ZLzIEOXcw0LrBUcrsdvu', '2025-06-21 13:30:34');
 
 --
 -- Indexes for dumped tables
@@ -151,19 +148,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `panitikan`
 --
 ALTER TABLE `panitikan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `registration_logs`
 --
 ALTER TABLE `registration_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

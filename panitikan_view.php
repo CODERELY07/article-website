@@ -19,6 +19,7 @@ if ($row = $result->fetch_assoc()):
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="bg-white dark:bg-gray-900 min-h-screen flex flex-col justify-between text-gray-800 dark:text-gray-300">
 
@@ -53,7 +54,7 @@ if ($row = $result->fetch_assoc()):
 
         <!-- Dynamic Content -->
         <div class="container mx-auto max-w-4xl px-6 text-md">
-            <div class="mb-5 text-gray-700 dark:text-gray-100 leading-7">
+            <div class="post-content ql-editor text-gray-700 dark:text-gray-300 leading-relaxed">
                 <?= nl2br($row['content']) ?>
             </div>
         </div>
@@ -67,9 +68,6 @@ if ($row = $result->fetch_assoc()):
     </main>
 
     <?php include('./components/footer.php'); ?>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-</body>
-</html>
 <?php
 else:
     echo "Content not found.";
