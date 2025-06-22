@@ -2,7 +2,7 @@
     <div class="mx-auto w-full max-w-screen-xl px-2 pt-6 lg:pt-8 pb-4">
         <div class="md:flex md:justify-between px-4 pe-6">
             <div class="mb-6 md:mb-0">
-                <a href="./login.php" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <a href="./signup.php" class="flex items-center space-x-3 rtl:space-x-reverse">
                     <span class="flex text-3xl font-extrabold tracking-tight leading-none text-gray-900 dark:text-white whitespace-nowrap">
                         Sibol<p class="font-medium">&trade;</p>
                     </span>

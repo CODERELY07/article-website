@@ -1,8 +1,9 @@
 <?php
     require_once 'functions.php';
     $title = "My Posts";
+    
     if (!isLoggedIn()) {
-        header("Location: login.php");
+        header("Location: signup.php");
         exit();
     }
 
@@ -11,7 +12,6 @@
     $posts = getAllPanitikan();
     
 ?>
-
 <?php include('./components/head.php')?>
 <?php include('./components/navbar.php');?>
 <?php include('./components/preloader.php')?>

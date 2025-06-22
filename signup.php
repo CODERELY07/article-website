@@ -111,9 +111,10 @@ if (isLoggedIn()) {
 
                 $.ajax({
                     type: 'POST',
-                    url: 'ajax_login.php',
+                    url: 'signin-ajax.php',
                     data: { email: email, password: password },
                     dataType: 'json',
+                    
                     success: function (response) {
                       
                         if (response.success) {
